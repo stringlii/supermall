@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: supermall-third-party
+server:
+  port: 30000
+alibaba:
+  cloud:
+    access-key: xxxxxxxxxxx
+    secret-key: xxxxxxxxxxx
+    oss:
+      endpoint: xxxxxxxxxxx
+      bucket: xxxxxxxxxxx

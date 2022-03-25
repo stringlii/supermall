@@ -1,0 +1,83 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        #服务路由
+        - id: product_route
+          uri: lb://supermall-product
+          predicates:
+            - Path=/api/product/**,/hello
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: third_party_route
+          uri: lb://supermall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty(?<segment>/?.*), $\{segment}
+        - id: member_route
+          uri: lb://supermall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: ware_route
+          uri: lb://supermall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: coupon_route
+          uri: lb://supermall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: order_route
+          uri: lb://supermall-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        #人人fast项目路由
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), /renren-fast$\{segment}
+
+        #域名转发
+        - id: supermall_search_route
+          uri: lb://supermall-search
+          predicates:
+            - Host=search.supermall.com
+        - id: supermall_auth_server_route
+          uri: lb://supermall-auth-server
+          predicates:
+            - Host=auth.supermall.com
+        - id: supermall_cart_route
+          uri: lb://supermall-cart
+          predicates:
+            - Host=cart.supermall.com
+        - id: supermall_order_route
+          uri: lb://supermall-order
+          predicates:
+            - Host=order.supermall.com
+        - id: supermall_member_route
+          uri: lb://supermall-member
+          predicates:
+            - Host=member.supermall.com
+        - id: supermall_seckill_route
+          uri: lb://supermall-seckill
+          predicates:
+            - Host=seckill.supermall.com
+
+        - id: supermall_host_route
+          uri: lb://supermall-product
+          predicates:
+            - Host=**.supermall.com
+
+gateway:
+  log:
+    enable: true
