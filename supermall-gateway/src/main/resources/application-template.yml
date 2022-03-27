@@ -1,5 +1,12 @@
+server:
+  port: 88
 spring:
+  application:
+    name: supermall-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
     gateway:
       routes:
         #服务路由
