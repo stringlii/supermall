@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  application:
+    name: supermall-search
+server:
+  port: 12000
+elasticsearch:
+  hostname: 127.0.0.1
+  port: 9200
+  username: elastic
+  password: elastic

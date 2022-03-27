@@ -11,6 +11,7 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.*;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/1/27 5:02 PM
  */
 @Configuration
+@EnableConfigurationProperties(ElasticSearchProperties.class)
 public class ElasticSearchConfiguration {
     private final RestHighLevelClient restHighLevelClient;
 
@@ -34,14 +36,14 @@ public class ElasticSearchConfiguration {
         COMMON_OPTIONS = builder.build();
     }
 
-    public ElasticSearchConfiguration() {
+    public ElasticSearchConfiguration(ElasticSearchProperties properties) {
         //初始化ES操作客户端
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials("renren", "123456"));
+                new UsernamePasswordCredentials(properties.getUsername(), properties.getPassword()));
 
         this.restHighLevelClient = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("127.0.0.1", 9200))
+                RestClient.builder(new HttpHost(properties.getHostname(), properties.getPort()))
                         .setHttpClientConfigCallback(httpClientBuilder -> {
                             httpClientBuilder.disableAuthCaching();
                             return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
@@ -50,14 +52,14 @@ public class ElasticSearchConfiguration {
 
     @Bean
     public RestHighLevelClient restHighLevelClient() {
-        return restHighLevelClient;
+        return this.restHighLevelClient;
     }
 
     @Bean
     public ElasticsearchClient restClient() {
         // Create the new Java Client with the same low level client
         ElasticsearchTransport transport = new RestClientTransport(
-                restHighLevelClient.getLowLevelClient(),
+                this.restHighLevelClient.getLowLevelClient(),
                 new JacksonJsonpMapper()
         );
         return new ElasticsearchClient(transport);
