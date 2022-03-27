@@ -1,25 +1,3 @@
-server:
-  port: 11000
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/supermall_wms
-    username: renren
-    password: 123456
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
-  application:
-    name: supermall-ware
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
-mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
-  global-config:
-    db-config:
-      id-type: auto
-logging:
-  level:
-    com.litianyi.supermall: debug
+  profiles:
+    active: dev
