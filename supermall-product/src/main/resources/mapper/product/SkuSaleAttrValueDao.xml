@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.litianyi.supermall.product.dao.SkuSaleAttrValueDao">
-
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.litianyi.supermall.product.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
@@ -13,5 +12,14 @@
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
 
-
+    <select id="getSaleAttrsBySpuId" resultType="com.litianyi.supermall.product.vo.SkuItemVo$ItemSaleAttrVo">
+        select ssav.attr_id,
+               ssav.attr_name,
+               group_concat(distinct ssav.attr_value) as attr_value
+        from pms_sku_sale_attr_value ssav
+        where sku_id in (select info.sku_id
+                         from pms_sku_info info
+                         where info.spu_id = #{spuId})
+        group by ssav.attr_id, ssav.attr_name;
+    </select>
 </mapper>

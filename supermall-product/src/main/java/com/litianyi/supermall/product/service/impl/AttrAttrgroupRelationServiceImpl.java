@@ -71,11 +71,4 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
         }).collect(Collectors.toList());
         this.saveBatch(relationEntityList);
     }
-
-    @Override
-    public List<AttrAttrgroupRelationEntity> listByAttrgroupIds(List<Long> attrGroupIds) {
-        return baseMapper.selectList(new LambdaQueryWrapper<AttrAttrgroupRelationEntity>()
-                .in(AttrAttrgroupRelationEntity::getAttrGroupId, attrGroupIds));
-    }
-
 }

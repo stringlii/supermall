@@ -2,8 +2,6 @@ package com.litianyi.supermall.product.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.litianyi.common.constant.ProductConstant;
 import com.litianyi.common.to.es.SkuEsModel;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.product.entity.*;
@@ -11,6 +9,7 @@ import com.litianyi.supermall.product.feign.SearchFeignService;
 import com.litianyi.supermall.product.feign.WareFeignService;
 import com.litianyi.supermall.product.service.*;
 import com.litianyi.supermall.product.vo.SkuHasStockVo;
+import com.litianyi.supermall.product.vo.SkuItemVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.litianyi.common.utils.PageUtils;
@@ -52,6 +49,18 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     @Autowired
     private SearchFeignService searchFeignService;
+
+    @Autowired
+    private SkuImagesService skuImagesService;
+
+    @Autowired
+    private SpuInfoDescService spuInfoDescService;
+
+    @Autowired
+    private AttrGroupService attrGroupService;
+
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -204,6 +213,36 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         if (r.getCode() != 0) {
             throw new Exception("保存到es失败");
         }
+    }
+
+    @Override
+    public SkuItemVo item(Long skuId) {
+        SkuItemVo vo = new SkuItemVo();
+
+        // sku 基本信息 pms_sku_info
+        SkuInfoEntity skuInfoEntity = this.getById(skuId);
+        vo.setInfo(skuInfoEntity);
+
+        Long spuId = skuInfoEntity.getSpuId();
+
+        // sku 图片信息 pms_sku_images
+        List<SkuImagesEntity> imagesEntities = skuImagesService.getImagesBySkuId(skuId);
+        vo.setImages(imagesEntities);
+
+        // spu 销售属性组合
+       List<SkuItemVo.ItemSaleAttrVo> saleAttrVos = skuSaleAttrValueService.getSaleAttrsBySpuId(spuId);
+       vo.setSaleAttrs(saleAttrVos);
+
+        // spu 介绍
+        SpuInfoDescEntity spuInfoDescEntity = spuInfoDescService.getById(spuId);
+        vo.setDesc(spuInfoDescEntity);
+
+        // spu 规格参数信息
+        List<SkuItemVo.ItemAttrGroupVo> attrGroupVos = attrGroupService.listAttrGroupWithAttrsBySpuId(spuId,
+                skuInfoEntity.getCatalogId());
+        vo.setGroupAttrs(attrGroupVos);
+
+        return vo;
     }
 
 }

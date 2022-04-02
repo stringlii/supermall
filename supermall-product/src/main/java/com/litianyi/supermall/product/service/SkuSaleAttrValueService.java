@@ -3,7 +3,9 @@ package com.litianyi.supermall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.litianyi.common.utils.PageUtils;
 import com.litianyi.supermall.product.entity.SkuSaleAttrValueEntity;
+import com.litianyi.supermall.product.vo.SkuItemVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<SkuItemVo.ItemSaleAttrVo> getSaleAttrsBySpuId(Long spuId);
 }
 

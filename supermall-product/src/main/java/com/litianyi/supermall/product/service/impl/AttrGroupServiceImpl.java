@@ -3,9 +3,12 @@ package com.litianyi.supermall.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.litianyi.supermall.product.entity.AttrAttrgroupRelationEntity;
 import com.litianyi.supermall.product.entity.AttrEntity;
+import com.litianyi.supermall.product.entity.ProductAttrValueEntity;
 import com.litianyi.supermall.product.service.AttrAttrgroupRelationService;
 import com.litianyi.supermall.product.service.AttrService;
+import com.litianyi.supermall.product.service.ProductAttrValueService;
 import com.litianyi.supermall.product.vo.AttrGroupWithAttrsVo;
+import com.litianyi.supermall.product.vo.SkuItemVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +35,6 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Autowired
     private AttrService attrService;
-    @Autowired
-    private AttrAttrgroupRelationService relationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -73,6 +74,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             vo.setAttrs(attrEntityList);
             return vo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SkuItemVo.ItemAttrGroupVo> listAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId) {
+        return baseMapper.listAttrGroupWithAttrsBySpuId(spuId, catalogId);
     }
 
 }

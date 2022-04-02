@@ -28,7 +28,5 @@ public interface AttrAttrgroupRelationService extends IService<AttrAttrgroupRela
     List<AttrAttrgroupRelationEntity> listByAttrGroupIds(List<Long> attrGroupIds);
 
     void addRelation(List<AttrGroupRelationVo> vos);
-
-    List<AttrAttrgroupRelationEntity> listByAttrgroupIds(List<Long> attrGroupIds);
 }
 

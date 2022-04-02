@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.litianyi.supermall.product.dao.AttrGroupDao">
-
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.litianyi.supermall.product.entity.AttrGroupEntity" id="attrGroupMap">
         <result property="attrGroupId" column="attr_group_id"/>
         <result property="attrGroupName" column="attr_group_name"/>
@@ -13,5 +12,20 @@
         <result property="catalogId" column="catelog_id"/>
     </resultMap>
 
+    <resultMap id="itemAttrGroupVo" type="com.litianyi.supermall.product.vo.SkuItemVo$ItemAttrGroupVo">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.litianyi.supermall.product.vo.SkuItemVo$ItemAttrGroupVo$BaseAttrVo">
+            <result property="attrName" column="attr_name"/>
+            <result property="attrValues" column="attr_value"/>
+        </collection>
+    </resultMap>
 
+    <select id="listAttrGroupWithAttrsBySpuId" resultMap="itemAttrGroupVo">
+        select ag.attr_group_name, pav.attr_name, pav.attr_value
+        from pms_attr_group ag
+                 left join pms_attr_attrgroup_relation aar on ag.attr_group_id = aar.attr_group_id
+                 left join pms_product_attr_value pav on pav.attr_id = aar.attr_id
+        where ag.catalog_id = #{catalogId}
+          and pav.spu_id = #{spuId}
+    </select>
 </mapper>
