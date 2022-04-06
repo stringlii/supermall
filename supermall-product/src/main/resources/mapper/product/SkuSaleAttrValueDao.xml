@@ -12,14 +12,25 @@
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
 
-    <select id="getSaleAttrsBySpuId" resultType="com.litianyi.supermall.product.vo.SkuItemVo$ItemSaleAttrVo">
+    <resultMap id="itemSaleAttrVo" type="com.litianyi.supermall.product.vo.SkuItemVo$ItemSaleAttrVo">
+        <result property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <collection property="attrValues"
+                    ofType="com.litianyi.supermall.product.vo.SkuItemVo$ItemSaleAttrVo$AttrValueWithSkuIdVo">
+            <result property="attrValue" column="attr_value"/>
+            <result property="skuIds" column="sku_ids"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSaleAttrsBySpuId" resultMap="itemSaleAttrVo">
         select ssav.attr_id,
                ssav.attr_name,
-               group_concat(distinct ssav.attr_value) as attr_value
+               ssav.attr_value,
+               group_concat(ssav.sku_id) as sku_ids
         from pms_sku_sale_attr_value ssav
         where sku_id in (select info.sku_id
                          from pms_sku_info info
                          where info.spu_id = #{spuId})
-        group by ssav.attr_id, ssav.attr_name;
+        group by ssav.attr_id, ssav.attr_name, ssav.attr_value;
     </select>
 </mapper>

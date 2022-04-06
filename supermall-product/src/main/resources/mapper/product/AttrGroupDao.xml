@@ -16,7 +16,7 @@
         <result property="groupName" column="attr_group_name"/>
         <collection property="attrs" ofType="com.litianyi.supermall.product.vo.SkuItemVo$ItemAttrGroupVo$BaseAttrVo">
             <result property="attrName" column="attr_name"/>
-            <result property="attrValues" column="attr_value"/>
+            <result property="attrValue" column="attr_value"/>
         </collection>
     </resultMap>
 

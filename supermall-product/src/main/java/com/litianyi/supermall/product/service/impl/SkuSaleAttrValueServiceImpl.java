@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
 
     @Override
     public List<SkuItemVo.ItemSaleAttrVo> getSaleAttrsBySpuId(Long spuId) {
-        List<SkuItemVo.ItemSaleAttrVo> vos = new ArrayList<>();
+        /*List<SkuItemVo.ItemSaleAttrVo> vos = new ArrayList<>();
 
         List<Long> skuIds = skuInfoService.listBySpuId(spuId).stream()
                 .map(SkuInfoEntity::getSkuId)
@@ -49,9 +50,9 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
         List<SkuSaleAttrValueEntity> skuSaleAttrValueEntities = this.list(new LambdaQueryWrapper<SkuSaleAttrValueEntity>()
                 .in(!CollectionUtils.isEmpty(skuIds), SkuSaleAttrValueEntity::getSkuId, skuIds));
 
-        Map<Long, List<SkuSaleAttrValueEntity>> collect = skuSaleAttrValueEntities.stream()
+        Map<Long, List<SkuSaleAttrValueEntity>> attrIdMapSaleAttrValue = skuSaleAttrValueEntities.stream()
                 .collect(Collectors.groupingBy(SkuSaleAttrValueEntity::getAttrId));
-        collect.forEach((k, v) -> {
+        attrIdMapSaleAttrValue.forEach((k, v) -> {
             SkuItemVo.ItemSaleAttrVo vo = new SkuItemVo.ItemSaleAttrVo();
             vo.setAttrId(k);
 
@@ -61,16 +62,24 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
             String attrName = skuSaleAttrValueEntity.getAttrName();
             vo.setAttrName(attrName);
 
-            List<String> values = v.stream()
-                    .map(SkuSaleAttrValueEntity::getAttrValue)
-                    .distinct()
-                    .collect(Collectors.toList());
+            // 属性对应的skuId
+            List<SkuItemVo.ItemSaleAttrVo.AttrValueWithSkuIdVo> values = new ArrayList<>();
+            v.stream()
+                    .collect(Collectors.groupingBy(SkuSaleAttrValueEntity::getAttrValue))
+                    .forEach((key, value) -> {
+                        SkuItemVo.ItemSaleAttrVo.AttrValueWithSkuIdVo attrValueWithSkuIdVo = new SkuItemVo.ItemSaleAttrVo.AttrValueWithSkuIdVo();
+                        List<Long> collect = value.stream().map(SkuSaleAttrValueEntity::getSkuId).collect(Collectors.toList());
+                        attrValueWithSkuIdVo.setAttrValue(key);
+                        attrValueWithSkuIdVo.setSkuIds(collect);
+                        values.add(attrValueWithSkuIdVo);
+                    });
             vo.setAttrValues(values);
 
             vos.add(vo);
         });
 
-        return vos;
+        return vos;*/
+        return this.baseMapper.getSaleAttrsBySpuId(spuId);
     }
 
 }
