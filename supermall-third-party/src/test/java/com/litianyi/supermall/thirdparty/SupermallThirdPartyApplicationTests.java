@@ -1,7 +1,11 @@
 package com.litianyi.supermall.thirdparty;
 
 import com.aliyun.oss.OSSClient;
+import com.litianyi.supermall.thirdparty.component.SmsComponent;
+import com.litianyi.supermall.thirdparty.util.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +14,8 @@ import javax.annotation.Resource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @SpringBootTest
@@ -18,8 +24,16 @@ class SupermallThirdPartyApplicationTests {
     @Resource
     OSSClient ossClient;
 
+    @Autowired
+    SmsComponent smsComponent;
+
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    public void sendSms() throws Exception {
+        smsComponent.sendCode("17631650304", "123456");
     }
 
     @Test

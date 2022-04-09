@@ -21,5 +21,6 @@
         <module>supermall-gateway</module>
         <module>supermall-third-party</module>
         <module>supermall-search</module>
+        <module>supermall-auth-server</module>
     </modules>
 </project>

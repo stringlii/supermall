@@ -1,4 +1,4 @@
-package com.litianyi.supermall.product.web.controller;
+package com.litianyi.supermall.product.view.controller;
 
 import com.litianyi.supermall.product.entity.CategoryEntity;
 import com.litianyi.supermall.product.service.CategoryService;

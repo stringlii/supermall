@@ -1,4 +1,4 @@
-package com.litianyi.supermall.product.web.controller;
+package com.litianyi.supermall.product.view.controller;
 
 import com.litianyi.supermall.product.service.SkuInfoService;
 import com.litianyi.supermall.product.vo.SkuItemVo;

@@ -2,7 +2,7 @@ package com.litianyi.common.constant;
 
 public class DomainConstant {
 
-    public static final String SUPERMALL = "supermall.com";
+    public static final String SUPERMALL = "http://supermall.com";
 
     public static final String SUPERMALL_AUTH = "http://auth.supermall.com";
 
