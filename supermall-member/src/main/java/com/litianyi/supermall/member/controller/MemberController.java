@@ -3,13 +3,13 @@ package com.litianyi.supermall.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.litianyi.common.constant.BizCodeEnum;
+import com.litianyi.supermall.member.exception.PhoneExistException;
+import com.litianyi.supermall.member.exception.UsernameExistException;
 import com.litianyi.supermall.member.feign.CouponFeignService;
+import com.litianyi.supermall.member.to.MemberRegisterTo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.litianyi.supermall.member.entity.MemberEntity;
 import com.litianyi.supermall.member.service.MemberService;
@@ -26,16 +26,20 @@ import com.litianyi.common.utils.R;
 @RestController
 @RequestMapping("member/member")
 public class MemberController {
+
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private CouponFeignService couponFeignService;
-
-    @RequestMapping("/test")
-    public R test() {
-        R test = couponFeignService.test();
-        return test;
+    @PostMapping("/register")
+    public R register(@RequestBody MemberRegisterTo to) {
+        try {
+            memberService.register(to);
+        } catch (PhoneExistException e) {
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION);
+        } catch (UsernameExistException e) {
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION);
+        }
+        return R.ok();
     }
 
     /**

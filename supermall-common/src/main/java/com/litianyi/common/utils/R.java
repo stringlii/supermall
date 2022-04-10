@@ -49,6 +49,10 @@ public class R extends HashMap<String, Object> {
         return JSON.parseObject(JSON.toJSONString(data), clazz);
     }
 
+    public String getMessage() {
+        return getData("msg", String.class);
+    }
+
     public R() {
         put("code", 0);
         put("msg", "success");
@@ -99,5 +103,9 @@ public class R extends HashMap<String, Object> {
 
     public Integer getCode() {
         return (Integer) this.get("code");
+    }
+
+    public boolean isSuccess() {
+        return getCode() == 0;
     }
 }
