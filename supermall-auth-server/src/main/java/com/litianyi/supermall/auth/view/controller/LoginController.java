@@ -4,6 +4,7 @@ import com.litianyi.common.constant.AuthServerConstant;
 import com.litianyi.common.constant.DomainConstant;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.auth.feign.MemberFeignService;
+import com.litianyi.supermall.auth.vo.UserLoginVo;
 import com.litianyi.supermall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +67,18 @@ public class LoginController {
         }
 
         return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+    }
+
+    @PostMapping("/login")
+    public String login(UserLoginVo vo, RedirectAttributes attributes) {
+        R loginR = memberFeignService.login(vo);
+        if (!loginR.isSuccess()) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("errors", loginR.getMessage());
+            attributes.addFlashAttribute("errors", errors);
+            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+        }
+
+        return "redirect:" + DomainConstant.SUPERMALL;
     }
 }

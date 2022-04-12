@@ -7,6 +7,7 @@ import com.litianyi.common.constant.BizCodeEnum;
 import com.litianyi.supermall.member.exception.PhoneExistException;
 import com.litianyi.supermall.member.exception.UsernameExistException;
 import com.litianyi.supermall.member.feign.CouponFeignService;
+import com.litianyi.supermall.member.to.MemberLoginTo;
 import com.litianyi.supermall.member.to.MemberRegisterTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,15 @@ public class MemberController {
             return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION);
         } catch (UsernameExistException e) {
             return R.error(BizCodeEnum.USER_EXIST_EXCEPTION);
+        }
+        return R.ok();
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginTo to){
+        MemberEntity memberEntity = memberService.login(to);
+        if (memberEntity==null){
+            return R.error(BizCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVALID_EXCEPTION);
         }
         return R.ok();
     }

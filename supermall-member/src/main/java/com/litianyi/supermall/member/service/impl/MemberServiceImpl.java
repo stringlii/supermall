@@ -5,6 +5,7 @@ import com.litianyi.supermall.member.entity.MemberLevelEntity;
 import com.litianyi.supermall.member.exception.PhoneExistException;
 import com.litianyi.supermall.member.exception.UsernameExistException;
 import com.litianyi.supermall.member.service.MemberLevelService;
+import com.litianyi.supermall.member.to.MemberLoginTo;
 import com.litianyi.supermall.member.to.MemberRegisterTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -71,6 +72,23 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
                 .eq(MemberEntity::getMobile, phone));
         if (count > 0)
             throw new PhoneExistException();
+    }
+
+    @Override
+    public MemberEntity login(MemberLoginTo to) {
+        MemberEntity memberEntity = this.getOne(new LambdaQueryWrapper<MemberEntity>()
+                .eq(MemberEntity::getUsername, to.getLoginAcct())
+                .or()
+                .eq(MemberEntity::getMobile, to.getLoginAcct()));
+        if (memberEntity == null) {
+            return null;
+        }
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(to.getPassword(), memberEntity.getPassword())) {
+            return null;
+        }
+
+        return memberEntity;
     }
 
 }
