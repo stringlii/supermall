@@ -7,6 +7,7 @@ import com.litianyi.supermall.member.exception.PhoneExistException;
 import com.litianyi.supermall.member.exception.UsernameExistException;
 import com.litianyi.supermall.member.to.MemberLoginTo;
 import com.litianyi.supermall.member.to.MemberRegisterTo;
+import com.litianyi.supermall.member.to.SocialUserByWeibo;
 
 import java.util.Map;
 
@@ -27,6 +28,8 @@ public interface MemberService extends IService<MemberEntity> {
 
     void checkPhoneUnique(String phone) throws PhoneExistException;
 
-    MemberEntity login(MemberLoginTo to);
+    MemberEntity oauthLogin(MemberLoginTo to);
+
+    MemberEntity oauthLogin(SocialUserByWeibo socialUserByWeibo);
 }
 

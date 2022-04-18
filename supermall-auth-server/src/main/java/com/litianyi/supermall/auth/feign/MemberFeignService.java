@@ -1,6 +1,7 @@
 package com.litianyi.supermall.auth.feign;
 
 import com.litianyi.common.utils.R;
+import com.litianyi.supermall.auth.to.SocialUserByWeibo;
 import com.litianyi.supermall.auth.vo.UserLoginVo;
 import com.litianyi.supermall.auth.vo.UserRegisterVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -20,4 +21,7 @@ public interface MemberFeignService {
 
     @PostMapping("/member/member/login")
     R login(@RequestBody UserLoginVo vo);
+
+    @PostMapping("/member/member/oauth/login")
+    R oauthLogin(@RequestBody SocialUserByWeibo socialUserByWeibo);
 }

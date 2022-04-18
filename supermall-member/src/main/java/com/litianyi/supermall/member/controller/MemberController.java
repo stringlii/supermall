@@ -6,9 +6,9 @@ import java.util.Map;
 import com.litianyi.common.constant.BizCodeEnum;
 import com.litianyi.supermall.member.exception.PhoneExistException;
 import com.litianyi.supermall.member.exception.UsernameExistException;
-import com.litianyi.supermall.member.feign.CouponFeignService;
 import com.litianyi.supermall.member.to.MemberLoginTo;
 import com.litianyi.supermall.member.to.MemberRegisterTo;
+import com.litianyi.supermall.member.to.SocialUserByWeibo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +31,15 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @PostMapping("/oauth/login")
+    public R oauthLogin(@RequestBody SocialUserByWeibo socialUserByWeibo) {
+        MemberEntity memberEntity = memberService.oauthLogin(socialUserByWeibo);
+        if (memberEntity == null) {
+            return R.error(BizCodeEnum.LOGIN_ACCOUNT_OAUTH_INVALID_EXCEPTION);
+        }
+        return R.ok().setData(memberEntity);
+    }
+
     @PostMapping("/register")
     public R register(@RequestBody MemberRegisterTo to) {
         try {
@@ -44,12 +53,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public R login(@RequestBody MemberLoginTo to){
-        MemberEntity memberEntity = memberService.login(to);
-        if (memberEntity==null){
+    public R login(@RequestBody MemberLoginTo to) {
+        MemberEntity memberEntity = memberService.oauthLogin(to);
+        if (memberEntity == null) {
             return R.error(BizCodeEnum.LOGIN_ACCOUNT_PASSWORD_INVALID_EXCEPTION);
         }
-        return R.ok();
+        return R.ok().setData(memberEntity);
     }
 
     /**

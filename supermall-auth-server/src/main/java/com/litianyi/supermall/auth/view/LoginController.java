@@ -1,4 +1,4 @@
-package com.litianyi.supermall.auth.view.controller;
+package com.litianyi.supermall.auth.view;
 
 import com.litianyi.common.constant.AuthServerConstant;
 import com.litianyi.common.constant.DomainConstant;
