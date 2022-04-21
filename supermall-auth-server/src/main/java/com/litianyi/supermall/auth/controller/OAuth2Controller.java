@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @author litianyi
  * @version 1.0
@@ -33,7 +35,7 @@ public class OAuth2Controller {
     private MemberFeignService memberFeignService;
 
     @GetMapping("/oauth2.0/weibo/success")
-    public String weibo(@RequestParam String code) {
+    public String weibo(@RequestParam String code, HttpSession session) {
         //换取access token
         RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -53,7 +55,7 @@ public class OAuth2Controller {
             return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
         }
         MemberVo memberVo = oauthR.getData(MemberVo.class);
-        log.info("登录成功{}", memberVo);
+        session.setAttribute("loginUser", memberVo);
         return "redirect:" + DomainConstant.SUPERMALL;
     }
 }

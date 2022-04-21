@@ -56,6 +56,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setUsername(to.getUsername());
         memberEntity.setMobile(to.getPhone());
+        memberEntity.setNickname(to.getUsername());
 
         MemberLevelEntity levelEntity = memberLevelService.getDefaultLevel();
         memberEntity.setLevelId(levelEntity.getId());
