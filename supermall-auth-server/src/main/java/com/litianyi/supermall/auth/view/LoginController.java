@@ -4,6 +4,7 @@ import com.litianyi.common.constant.AuthServerConstant;
 import com.litianyi.common.constant.DomainConstant;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.auth.feign.MemberFeignService;
+import com.litianyi.supermall.auth.vo.MemberVo;
 import com.litianyi.supermall.auth.vo.UserLoginVo;
 import com.litianyi.supermall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +36,14 @@ public class LoginController {
 
     @Autowired
     private MemberFeignService memberFeignService;
+
+    @GetMapping("/login.html")
+    public String loginPage(HttpSession session) {
+        if (session.getAttribute(AuthServerConstant.LOGIN_USER) == null) {
+            return "login";
+        }
+        return "redirect:" + DomainConstant.SUPERMALL;
+    }
 
     /**
      * @param attributes 模拟重定向携带数据
@@ -70,7 +81,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(UserLoginVo vo, RedirectAttributes attributes) {
+    public String login(UserLoginVo vo, RedirectAttributes attributes, HttpSession session) {
         R loginR = memberFeignService.login(vo);
         if (!loginR.isSuccess()) {
             Map<String, String> errors = new HashMap<>();
@@ -79,6 +90,8 @@ public class LoginController {
             return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
         }
 
+        MemberVo memberVo = loginR.getData(MemberVo.class);
+        session.setAttribute(AuthServerConstant.LOGIN_USER, memberVo);
         return "redirect:" + DomainConstant.SUPERMALL;
     }
 }

@@ -1,5 +1,6 @@
 package com.litianyi.supermall.auth.controller;
 
+import com.litianyi.common.constant.AuthServerConstant;
 import com.litianyi.common.constant.DomainConstant;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.auth.config.WeiboOAuth2Properties;
@@ -55,7 +56,7 @@ public class OAuth2Controller {
             return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
         }
         MemberVo memberVo = oauthR.getData(MemberVo.class);
-        session.setAttribute("loginUser", memberVo);
+        session.setAttribute(AuthServerConstant.LOGIN_USER, memberVo);
         return "redirect:" + DomainConstant.SUPERMALL;
     }
 }

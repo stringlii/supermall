@@ -64,10 +64,18 @@
         </b>
         <ul>
             <li>
-                <a href="#" class="li_2">你好，请登录</a>
+                <a class="li_2" href="http://auth.supermall.com/login.html" th:if="${session.loginUser==null}">
+                    你好，请登录
+                </a>
+                <a class="li_2" th:if="${session.loginUser!=null}">
+                    欢迎:
+                    [[${session.loginUser.nickname}]]
+                </a>
             </li>
             <li>
-                <a href="#">免费注册</a>
+                <a href="http://auth.supermall.com/register.html" th:if="${session.loginUser==null}">
+                    免费注册
+                </a>
             </li>
             <span>|</span>
             <li>
@@ -1208,7 +1216,8 @@
                                 <span th:text="'¥'+${product.skuPrice}">¥5199.00</span>
                             </p>
                             <p class="tab_JE">
-                                <a href="/static/search/#" th:utext="${product.skuTitle}" th:href="|http://item.supermall.com/${product.skuId}.html|">
+                                <a href="/static/search/#" th:utext="${product.skuTitle}"
+                                   th:href="|http://item.supermall.com/${product.skuId}.html|">
                                     Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
                                 </a>
                             </p>
