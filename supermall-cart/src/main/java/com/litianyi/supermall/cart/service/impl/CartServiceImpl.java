@@ -55,6 +55,7 @@ public class CartServiceImpl implements CartService {
             CartVo.CartItem cartItem = JSON.parseObject(cartItemJson, CartVo.CartItem.class);
             cartItem.setCount(num + cartItem.getCount());
             cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
+            return;
         }
 
         CartVo.CartItem cartItem = new CartVo.CartItem();
@@ -112,11 +113,11 @@ public class CartServiceImpl implements CartService {
         if (userInfo.getUserId() != null) {
             //将临时购物车的商品合并到登录后的购物车
             //获取临时购物车
-            List<CartVo.CartItem> tempCartItems = this.getCartItems(CART_PREFIX + userInfo.getUserKey());
+            List<CartVo.CartItem> tempCartItems = this.getCartItems(userInfo.getUserKey());
             if (!CollectionUtils.isEmpty(tempCartItems)) {
                 //合并
                 tempCartItems.forEach(item -> this.add(item.getSkuId(), item.getCount()));
-                this.clearCartItem(CART_PREFIX + userInfo.getUserKey());
+                this.clearCartItem(userInfo.getUserKey());
             }
         }
         List<CartVo.CartItem> cartItems = this.getCartItems();
@@ -129,21 +130,18 @@ public class CartServiceImpl implements CartService {
         UserInfoDTO userInfo = UserContextHandler.getUserInfo();
 
         BoundHashOperations<String, Object, Object> hashOps;
-        String cartKey = "";
         if (userInfo.getUserId() != null) {
-            cartKey = CART_PREFIX + userInfo.getUserId().toString();
-            hashOps = redisTemplate.boundHashOps(cartKey);
+            hashOps = this.getCartOps(userInfo.getUserId().toString());
         } else {
-            cartKey = CART_PREFIX + userInfo.getUserKey();
-            hashOps = redisTemplate.boundHashOps(cartKey);
+            hashOps = this.getCartOps(userInfo.getUserKey());
             hashOps.expire(CartConstant.COOKIE_MAX_AGE, TimeUnit.SECONDS);
         }
 
         return hashOps;
     }
 
-    private BoundHashOperations<String, Object, Object> getCartOps(String cartKey) {
-        return redisTemplate.boundHashOps(cartKey);
+    private BoundHashOperations<String, Object, Object> getCartOps(String userId) {
+        return redisTemplate.boundHashOps(CART_PREFIX + userId);
     }
 
     private List<CartVo.CartItem> getCartItems() {
@@ -157,8 +155,8 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
-    private List<CartVo.CartItem> getCartItems(String cartKey) {
-        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(cartKey);
+    private List<CartVo.CartItem> getCartItems(String userId) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(userId);
         List<Object> values = cartOps.values();
         if (!CollectionUtils.isEmpty(values)) {
             return values.stream()
@@ -171,10 +169,10 @@ public class CartServiceImpl implements CartService {
     /**
      * 清空购物车
      *
-     * @param cartKey 购物车key
+     * @param userId 购物车key
      */
-    public void clearCartItem(String cartKey) {
-        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(cartKey);
+    public void clearCartItem(String userId) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(userId);
         Object[] keys = Objects.requireNonNull(cartOps.keys()).toArray();
         cartOps.delete(keys);
     }
