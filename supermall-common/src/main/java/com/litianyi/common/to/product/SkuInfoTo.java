@@ -1,4 +1,4 @@
-package com.litianyi.common.to;
+package com.litianyi.common.to.product;
 
 import lombok.Data;
 

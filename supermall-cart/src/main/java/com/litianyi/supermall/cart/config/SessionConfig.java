@@ -1,4 +1,4 @@
-package com.litianyi.supermall.product.config;
+package com.litianyi.supermall.cart.config;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 import com.litianyi.common.constant.AuthServerConstant;

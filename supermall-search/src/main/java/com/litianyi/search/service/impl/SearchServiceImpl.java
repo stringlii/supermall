@@ -1,11 +1,9 @@
 package com.litianyi.search.service.impl;
 
-import co.elastic.clients.elasticsearch._types.aggregations.NestedAggregate;
-import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.litianyi.common.constant.DomainConstant;
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.constant.UrlConstant;
+import com.litianyi.common.to.search.SkuEsModel;
 import com.litianyi.common.utils.R;
 import com.litianyi.search.config.ElasticSearchConfiguration;
 import com.litianyi.search.constant.EsConstant;
@@ -21,10 +19,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.AggregatorFactories;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.nested.ParsedNested;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
@@ -40,7 +36,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -274,7 +269,7 @@ public class SearchServiceImpl implements SearchService {
                     navVo.setNavName(attrId);
                 }
                 String link = replaceQueryString(param.get_queryString(), attr, "attrs");
-                navVo.setLink(DomainConstant.SUPERMALL_SEARCH + "/list.html?" + link);
+                navVo.setLink(UrlConstant.SUPERMALL_SEARCH + "/list.html?" + link);
 
                 return navVo;
             }).collect(Collectors.toList());
@@ -298,7 +293,7 @@ public class SearchServiceImpl implements SearchService {
                     link = replaceQueryString(param.get_queryString(), String.valueOf(brand.getBrandId()), "brandId");
                 }
                 navVo.setValue(brandName.toString());
-                navVo.setLink(DomainConstant.SUPERMALL_SEARCH + "/list.html?" + link);
+                navVo.setLink(UrlConstant.SUPERMALL_SEARCH + "/list.html?" + link);
             }
             navs.add(navVo);
             searchResult.setNavs(navs);
@@ -319,7 +314,7 @@ public class SearchServiceImpl implements SearchService {
                 navVo.setValue(String.valueOf(param.getCatalog3Id()));
             }
             String link = replaceQueryString(param.get_queryString(), String.valueOf(param.getCatalog3Id()), "catalog3Id");
-            navVo.setLink(DomainConstant.SUPERMALL_SEARCH + "/list.html?" + link);
+            navVo.setLink(UrlConstant.SUPERMALL_SEARCH + "/list.html?" + link);
             navs.add(navVo);
             searchResult.setNavs(navs);
         }

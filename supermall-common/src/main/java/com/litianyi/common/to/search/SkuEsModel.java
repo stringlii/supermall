@@ -1,4 +1,4 @@
-package com.litianyi.common.to.es;
+package com.litianyi.common.to.search;
 
 import lombok.Data;
 

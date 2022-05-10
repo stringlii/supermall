@@ -1,7 +1,7 @@
 package com.litianyi.search.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.to.search.SkuEsModel;
 import com.litianyi.search.constant.EsConstant;
 import com.litianyi.search.service.ProductSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.litianyi.search.config.ElasticSearchConfiguration.COMMON_OPTIONS;
 

@@ -1,5 +1,6 @@
-package com.litianyi.common.to;
+package com.litianyi.common.to.product;
 
+import com.litianyi.common.to.member.MemberPrice;
 import lombok.Data;
 
 import java.math.BigDecimal;

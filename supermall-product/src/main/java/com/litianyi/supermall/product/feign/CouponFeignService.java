@@ -1,7 +1,7 @@
 package com.litianyi.supermall.product.feign;
 
-import com.litianyi.common.to.SpuBoundTo;
-import com.litianyi.common.to.SpuReductionTo;
+import com.litianyi.common.to.product.SpuBoundTo;
+import com.litianyi.common.to.product.SpuReductionTo;
 import com.litianyi.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

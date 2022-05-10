@@ -2,7 +2,7 @@ package com.litianyi.supermall.product.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.to.search.SkuEsModel;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.product.entity.*;
 import com.litianyi.supermall.product.feign.SearchFeignService;

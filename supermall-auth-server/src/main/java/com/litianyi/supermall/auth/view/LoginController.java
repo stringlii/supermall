@@ -1,10 +1,10 @@
 package com.litianyi.supermall.auth.view;
 
 import com.litianyi.common.constant.AuthServerConstant;
-import com.litianyi.common.constant.DomainConstant;
+import com.litianyi.common.constant.UrlConstant;
+import com.litianyi.common.to.member.MemberTo;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.auth.feign.MemberFeignService;
-import com.litianyi.supermall.auth.vo.MemberVo;
 import com.litianyi.supermall.auth.vo.UserLoginVo;
 import com.litianyi.supermall.auth.vo.UserRegisterVo;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +42,7 @@ public class LoginController {
         if (session.getAttribute(AuthServerConstant.LOGIN_USER) == null) {
             return "login";
         }
-        return "redirect:" + DomainConstant.SUPERMALL;
+        return "redirect:" + UrlConstant.SUPERMALL;
     }
 
     /**
@@ -56,7 +56,7 @@ public class LoginController {
                             FieldError::getDefaultMessage,
                             (v1, v2) -> v2));
             attributes.addFlashAttribute("errors", errors);
-            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/register.html";
+            return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/register.html";
         }
 
         String code = vo.getCode();
@@ -68,16 +68,16 @@ public class LoginController {
                 Map<String, String> errors = new HashMap<>();
                 errors.put("msg", registerR.getMessage());
                 attributes.addFlashAttribute("errors", errors);
-                return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/register.html";
+                return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/register.html";
             }
         } else {
             Map<String, String> errors = new HashMap<>();
             errors.put("code", "验证码错误");
             attributes.addFlashAttribute("errors", errors);
-            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/register.html";
+            return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/register.html";
         }
 
-        return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+        return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/login.html";
     }
 
     @PostMapping("/login")
@@ -87,11 +87,11 @@ public class LoginController {
             Map<String, String> errors = new HashMap<>();
             errors.put("errors", loginR.getMessage());
             attributes.addFlashAttribute("errors", errors);
-            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+            return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/login.html";
         }
 
-        MemberVo memberVo = loginR.getData(MemberVo.class);
-        session.setAttribute(AuthServerConstant.LOGIN_USER, memberVo);
-        return "redirect:" + DomainConstant.SUPERMALL;
+        MemberTo memberTo = loginR.getData(MemberTo.class);
+        session.setAttribute(AuthServerConstant.LOGIN_USER, memberTo);
+        return "redirect:" + UrlConstant.SUPERMALL;
     }
 }

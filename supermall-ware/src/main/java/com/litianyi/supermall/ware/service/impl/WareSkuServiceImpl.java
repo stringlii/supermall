@@ -1,7 +1,7 @@
 package com.litianyi.supermall.ware.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.litianyi.common.to.SkuInfoTo;
+import com.litianyi.common.to.product.SkuInfoTo;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.ware.feign.ProductFeignService;
 import com.litianyi.supermall.ware.vo.SkuHasStockVo;

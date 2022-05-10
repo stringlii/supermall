@@ -1,19 +1,21 @@
 package com.litianyi.common.constant;
 
+/**
+ * @author litianyi
+ * @version 1.0
+ * @date 2022/5/8 9:54 PM
+ */
 public class DomainConstant {
 
-    public static final String SUPERMALL = "http://supermall.com";
+    public static final String SUPERMALL = "supermall.com";
 
-    public static final String SUPERMALL_AUTH = "http://auth.supermall.com";
+    public static final String SUPERMALL_AUTH = "auth.supermall.com";
 
-    public static final String SUPERMALL_ORDER = "http://order.supermall.com";
+    public static final String SUPERMALL_ORDER = "order.supermall.com";
 
-    public static final String SUPERMALL_SEARCH = "http://search.supermall.com";
+    public static final String SUPERMALL_SEARCH = "search.supermall.com";
 
-    public static final String SUPERMALL_CART = "http://cart.supermall.com";
+    public static final String SUPERMALL_CART = "cart.supermall.com";
 
-    public static final String SUPERMALL_MEMBER = "http://member.supermall.com";
-
-    //服务器异步通知页面路径
-    public static final String ALIPAY_NOTIFY_URL = "http://super.free.idcfengye.com/payed/notify";
+    public static final String SUPERMALL_MEMBER = "member.supermall.com";
 }

@@ -1,6 +1,8 @@
 package com.litianyi.search.config;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
+import com.litianyi.common.constant.AuthServerConstant;
+import com.litianyi.common.constant.DomainConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -24,8 +26,8 @@ public class SessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("JSESSIONID");
-        serializer.setDomainName("supermall.com");
-        serializer.setCookieMaxAge(2592000);
+        serializer.setDomainName(DomainConstant.SUPERMALL);
+        serializer.setCookieMaxAge(AuthServerConstant.COOKIE_MAX_AGE);
         return serializer;
     }
 }

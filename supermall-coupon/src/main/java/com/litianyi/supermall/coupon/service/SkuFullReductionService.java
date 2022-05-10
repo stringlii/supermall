@@ -1,7 +1,7 @@
 package com.litianyi.supermall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.litianyi.common.to.SpuReductionTo;
+import com.litianyi.common.to.product.SpuReductionTo;
 import com.litianyi.common.utils.PageUtils;
 import com.litianyi.supermall.coupon.entity.SkuFullReductionEntity;
 

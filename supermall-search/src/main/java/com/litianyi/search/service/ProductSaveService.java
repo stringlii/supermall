@@ -1,6 +1,6 @@
 package com.litianyi.search.service;
 
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.to.search.SkuEsModel;
 
 import java.io.IOException;
 import java.util.List;

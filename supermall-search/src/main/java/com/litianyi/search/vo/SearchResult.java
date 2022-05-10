@@ -1,6 +1,6 @@
 package com.litianyi.search.vo;
 
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.to.search.SkuEsModel;
 import lombok.Data;
 
 import java.util.ArrayList;

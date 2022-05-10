@@ -1,7 +1,7 @@
 package com.litianyi.search.controller;
 
 import com.litianyi.common.constant.BizCodeEnum;
-import com.litianyi.common.to.es.SkuEsModel;
+import com.litianyi.common.to.search.SkuEsModel;
 import com.litianyi.common.utils.R;
 import com.litianyi.search.service.ProductSaveService;
 import lombok.extern.slf4j.Slf4j;

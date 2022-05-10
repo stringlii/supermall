@@ -1,12 +1,12 @@
 package com.litianyi.supermall.auth.controller;
 
 import com.litianyi.common.constant.AuthServerConstant;
-import com.litianyi.common.constant.DomainConstant;
+import com.litianyi.common.constant.UrlConstant;
+import com.litianyi.common.to.member.MemberTo;
 import com.litianyi.common.utils.R;
 import com.litianyi.supermall.auth.config.WeiboOAuth2Properties;
 import com.litianyi.supermall.auth.feign.MemberFeignService;
 import com.litianyi.supermall.auth.to.SocialUserByWeibo;
-import com.litianyi.supermall.auth.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -47,16 +47,16 @@ public class OAuth2Controller {
         map.add("code", code);
         SocialUserByWeibo socialUser = restTemplate.postForObject(weiboOAuth2Properties.getWeiboAccessTokenUrl(), map, SocialUserByWeibo.class);
         if (socialUser == null) {
-            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+            return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/login.html";
         }
 
         // 登录或注册
         R oauthR = memberFeignService.oauthLogin(socialUser);
         if (!oauthR.isSuccess()) {
-            return "redirect:" + DomainConstant.SUPERMALL_AUTH + "/login.html";
+            return "redirect:" + UrlConstant.SUPERMALL_AUTH + "/login.html";
         }
-        MemberVo memberVo = oauthR.getData(MemberVo.class);
-        session.setAttribute(AuthServerConstant.LOGIN_USER, memberVo);
-        return "redirect:" + DomainConstant.SUPERMALL;
+        MemberTo memberTo = oauthR.getData(MemberTo.class);
+        session.setAttribute(AuthServerConstant.LOGIN_USER, memberTo);
+        return "redirect:" + UrlConstant.SUPERMALL;
     }
 }

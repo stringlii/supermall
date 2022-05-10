@@ -3,7 +3,7 @@ package com.litianyi.supermall.coupon.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.litianyi.common.to.SpuReductionTo;
+import com.litianyi.common.to.product.SpuReductionTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

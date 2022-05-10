@@ -82,4 +82,10 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
         return this.baseMapper.getSaleAttrsBySpuId(spuId);
     }
 
+    @Override
+    public List<SkuSaleAttrValueEntity> listBySkuId(Long skuId) {
+        return this.list(new LambdaQueryWrapper<SkuSaleAttrValueEntity>()
+                .eq(SkuSaleAttrValueEntity::getSkuId, skuId));
+    }
+
 }

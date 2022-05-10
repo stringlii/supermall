@@ -1,18 +1,11 @@
-package com.litianyi.supermall.auth.vo;
+package com.litianyi.common.to.member;
 
 import lombok.Data;
 
 import java.util.Date;
 
-/**
- * 会员
- *
- * @author litianyi
- * @email stringli@qq.com
- * @date 2022-01-02 13:39:44
- */
 @Data
-public class MemberVo {
+public class MemberTo {
 
     /**
      * id

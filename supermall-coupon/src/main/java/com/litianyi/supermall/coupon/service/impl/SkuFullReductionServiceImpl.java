@@ -1,7 +1,6 @@
 package com.litianyi.supermall.coupon.service.impl;
 
-import com.litianyi.common.to.MemberPrice;
-import com.litianyi.common.to.SpuReductionTo;
+import com.litianyi.common.to.product.SpuReductionTo;
 import com.litianyi.supermall.coupon.entity.MemberPriceEntity;
 import com.litianyi.supermall.coupon.entity.SkuLadderEntity;
 import com.litianyi.supermall.coupon.service.MemberPriceService;
