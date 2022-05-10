@@ -24,16 +24,16 @@
         </ul>
 
         <ul class="hd_wrap_right">
-            <li class="forel">
-                <a href="http://auth.supermall.com/login.html" th:if="${session.loginUser==null}">
+            <li style="width: 200px;" class="forel">
+                <a style="width: 120px;" href="http://auth.supermall.com/login.html" th:if="${session.loginUser==null}">
                     你好，请登录
                 </a>
-                <a th:if="${session.loginUser!=null}">
+                <a style="width: 50px;" th:if="${session.loginUser!=null}">
                     欢迎:
                     [[${session.loginUser.nickname}]]
                 </a>
                 &nbsp;
-                <a href="http://auth.supermall.com/register.html" th:if="${session.loginUser==null}">
+                <a style="width: 50px;" href="http://auth.supermall.com/register.html" th:if="${session.loginUser==null}">
                     免费注册
                 </a>
             </li>
