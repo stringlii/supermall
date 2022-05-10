@@ -22,5 +22,6 @@
         <module>supermall-third-party</module>
         <module>supermall-search</module>
         <module>supermall-auth-server</module>
+        <module>supermall-cart</module>
     </modules>
 </project>

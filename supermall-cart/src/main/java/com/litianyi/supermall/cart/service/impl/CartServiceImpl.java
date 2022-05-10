@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -81,7 +80,7 @@ public class CartServiceImpl implements CartService {
                 List<String> attrs = skuSaleAttrValueTOs.stream().map(item -> {
                     String attrName = item.getAttrName();
                     String attrValue = item.getAttrValue();
-                    return StringUtils.join(attrName, attrValue, ",");
+                    return StringUtils.join(attrName, attrValue, " ");
                 }).collect(Collectors.toList());
                 cartItem.setSkuAttr(attrs);
             } else {

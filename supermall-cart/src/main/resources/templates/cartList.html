@@ -63,7 +63,7 @@
                 <input type="button" value="搜索" class="one_right_btn">
             </div>
         </div>
-        <div class="one_search_load" th:if="${userId}==null">
+        <div class="one_search_load" th:if="${session.loginUser==null}">
             <img src="/static/cart/img/shop_07.jpg" class="one_load_wraing">
             <span>您还没有登录！登录后购物车的商品将保存到您账号中</span>
             <a href="#"><input type="button" onclick="login()" value="立即登录" class="one_load_btn"></a>
@@ -101,9 +101,11 @@
                             <li><input type="checkbox" class="check" th:checked="${item.check}"></li>
                             <li>
                                 <dt><img th:src="${item.image}" alt=""></dt>
-                                <dd>
+                                <dd style="width: 300px;">
                                     <p>
                                         <span th:text="${item.title}">TCL 55A950C 55英寸32核</span>
+                                    </p>
+                                    <p>
                                         <span th:each="attr:${item.skuAttr}" th:text="${attr}">尺码: 55时 超薄曲面 人工智能</span>
                                     </p>
                                 </dd>
@@ -150,8 +152,9 @@
             </div>
             <div>
                 <ol>
-                    <li>总价:<span style="color:#e64346;font-weight:bold;font-size:16px;" class="fnt">￥[[${#numbers.formatDecimal(cart.amount,3,2)}]]</span></li>
-
+                    <li>总价:<span style="color:#e64346;font-weight:bold;font-size:16px;" class="fnt">￥[[${#numbers.formatDecimal(cart.amount,3,2)}]]</span>
+                    </li>
+                    <li>优惠:￥[[${#numbers.formatDecimal(cart.reduce,1,2)}]]</li>
                 </ol>
             </div>
             <div>
@@ -232,8 +235,7 @@
     }
 
     function login() {
-        var s = encodeURIComponent("http://cart.gmall.com:8087/cartList");
-        window.location.href = "http://passport.atguigu.com/index?originUrl=" + s;
+        window.location.href = "http://auth.supermall.com/login.html";
     }
 
     function checkSku(chkbox) {
