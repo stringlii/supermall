@@ -17,8 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -101,6 +104,27 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Override
+    public CartVo getCart() {
+        CartVo cartVo = new CartVo();
+
+        UserInfoDTO userInfo = UserContextHandler.getUserInfo();
+        if (userInfo.getUserId() != null) {
+            //将临时购物车的商品合并到登录后的购物车
+            //获取临时购物车
+            List<CartVo.CartItem> tempCartItems = this.getCartItems(CART_PREFIX + userInfo.getUserKey());
+            if (!CollectionUtils.isEmpty(tempCartItems)) {
+                //合并
+                tempCartItems.forEach(item -> this.add(item.getSkuId(), item.getCount()));
+                this.clearCartItem(CART_PREFIX + userInfo.getUserKey());
+            }
+        }
+        List<CartVo.CartItem> cartItems = this.getCartItems();
+        cartVo.setItems(cartItems);
+
+        return cartVo;
+    }
+
     private BoundHashOperations<String, Object, Object> getCartOps() {
         UserInfoDTO userInfo = UserContextHandler.getUserInfo();
 
@@ -116,5 +140,42 @@ public class CartServiceImpl implements CartService {
         }
 
         return hashOps;
+    }
+
+    private BoundHashOperations<String, Object, Object> getCartOps(String cartKey) {
+        return redisTemplate.boundHashOps(cartKey);
+    }
+
+    private List<CartVo.CartItem> getCartItems() {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps();
+        List<Object> values = cartOps.values();
+        if (!CollectionUtils.isEmpty(values)) {
+            return values.stream()
+                    .map(item -> JSON.parseObject((String) item, CartVo.CartItem.class))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private List<CartVo.CartItem> getCartItems(String cartKey) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(cartKey);
+        List<Object> values = cartOps.values();
+        if (!CollectionUtils.isEmpty(values)) {
+            return values.stream()
+                    .map(item -> JSON.parseObject((String) item, CartVo.CartItem.class))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    /**
+     * 清空购物车
+     *
+     * @param cartKey 购物车key
+     */
+    public void clearCartItem(String cartKey) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(cartKey);
+        Object[] keys = Objects.requireNonNull(cartOps.keys()).toArray();
+        cartOps.delete(keys);
     }
 }

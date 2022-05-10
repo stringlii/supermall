@@ -1,8 +1,6 @@
 package com.litianyi.supermall.cart.controller;
 
 import com.litianyi.common.constant.UrlConstant;
-import com.litianyi.supermall.cart.context.UserContextHandler;
-import com.litianyi.supermall.cart.dto.UserInfoDTO;
 import com.litianyi.supermall.cart.service.CartService;
 import com.litianyi.supermall.cart.vo.CartVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,9 @@ public class CartController {
      * 购物车列表页
      */
     @GetMapping("/cart.html")
-    public String cartListPage() {
-
-        UserInfoDTO userInfo = UserContextHandler.getUserInfo();
+    public String cartListPage(Model model) {
+        CartVo cartVo = cartService.getCart();
+        model.addAttribute("cart", cartVo);
         return "cartList";
     }
 

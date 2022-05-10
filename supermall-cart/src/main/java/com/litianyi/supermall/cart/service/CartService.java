@@ -12,4 +12,6 @@ public interface CartService {
     void add(Long skuId, Integer num);
 
     CartVo.CartItem getAddToCart(Long skuId);
+
+    CartVo getCart();
 }
