@@ -21,7 +21,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -172,8 +171,6 @@ public class CartServiceImpl implements CartService {
      * @param userId 购物车key
      */
     public void clearCartItem(String userId) {
-        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps(userId);
-        Object[] keys = Objects.requireNonNull(cartOps.keys()).toArray();
-        cartOps.delete(keys);
+        redisTemplate.delete(CART_PREFIX + userId);
     }
 }
