@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author litianyi
@@ -36,10 +37,10 @@ public class CartController {
      * 添加商品到购物车
      */
     @GetMapping("/add")
-    public String add(@RequestParam Long skuId, @RequestParam Integer num, Model model) {
+    public String add(@RequestParam Long skuId, @RequestParam Integer num, RedirectAttributes redirectAttributes) {
 
         cartService.add(skuId, num);
-        model.addAttribute("skuId", skuId);
+        redirectAttributes.addAttribute("skuId", skuId);
         return "redirect:" + UrlConstant.SUPERMALL_CART + "/addToCart.html";
     }
 
