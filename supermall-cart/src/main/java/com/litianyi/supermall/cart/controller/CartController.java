@@ -47,8 +47,26 @@ public class CartController {
      */
     @GetMapping("/addToCart.html")
     public String addToCart(@RequestParam Long skuId, Model model) {
-        CartVo.CartItem cartItem = cartService.getAddToCart(skuId);
+        CartVo.CartItem cartItem = cartService.getCartItem(skuId);
         model.addAttribute("item", cartItem);
         return "success";
+    }
+
+    @GetMapping("/checkItem")
+    public String checkItem(@RequestParam Long skuId, @RequestParam Boolean check) {
+        cartService.checkItem(skuId, check);
+        return "redirect:" + UrlConstant.SUPERMALL_CART + "/cart.html";
+    }
+
+    @GetMapping("/countItem")
+    public String countItem(@RequestParam Long skuId, @RequestParam Integer num) {
+        cartService.countItem(skuId, num);
+        return "redirect:" + UrlConstant.SUPERMALL_CART + "/cart.html";
+    }
+
+    @GetMapping("/deleteItem")
+    public String deleteItem(@RequestParam Long skuId) {
+        cartService.deleteItem(skuId);
+        return "redirect:" + UrlConstant.SUPERMALL_CART + "/cart.html";
     }
 }

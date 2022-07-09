@@ -94,13 +94,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartVo.CartItem getAddToCart(Long skuId) {
+    public CartVo.CartItem getCartItem(Long skuId) {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
         String cartItemJson = (String) cartOps.get(skuId.toString());
-        if (StringUtils.isNotEmpty(cartItemJson)) {
-            return JSON.parseObject(cartItemJson, CartVo.CartItem.class);
+        if (StringUtils.isEmpty(cartItemJson)) {
+            return null;
         }
-        return null;
+        return JSON.parseObject(cartItemJson, CartVo.CartItem.class);
     }
 
     @Override
@@ -115,13 +115,40 @@ public class CartServiceImpl implements CartService {
             if (!CollectionUtils.isEmpty(tempCartItems)) {
                 //合并
                 tempCartItems.forEach(item -> this.add(item.getSkuId(), item.getCount()));
-                this.clearCartItem(userInfo.getUserKey());
+                this.clearItem(userInfo.getUserKey());
             }
         }
         List<CartVo.CartItem> cartItems = this.getCartItems();
         cartVo.setItems(cartItems);
 
         return cartVo;
+    }
+
+    @Override
+    public void clearItem(String userId) {
+        redisTemplate.delete(CART_PREFIX + userId);
+    }
+
+    @Override
+    public void checkItem(Long skuId, Boolean check) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps();
+        CartVo.CartItem cartItem = this.getCartItem(skuId);
+        cartItem.setCheck(check);
+        cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
+    }
+
+    @Override
+    public void countItem(Long skuId, Integer num) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps();
+        CartVo.CartItem cartItem = this.getCartItem(skuId);
+        cartItem.setCount(num);
+        cartOps.put(skuId.toString(), JSON.toJSONString(cartItem));
+    }
+
+    @Override
+    public void deleteItem(Long skuId) {
+        BoundHashOperations<String, Object, Object> cartOps = this.getCartOps();
+        cartOps.delete(skuId.toString());
     }
 
     private BoundHashOperations<String, Object, Object> getCartOps() {
@@ -164,12 +191,4 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
-    /**
-     * 清空购物车
-     *
-     * @param userId 购物车key
-     */
-    public void clearCartItem(String userId) {
-        redisTemplate.delete(CART_PREFIX + userId);
-    }
 }
